@@ -1,4 +1,5 @@
-import okhttp3.*;
+
+import android.telecom.Call;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -7,6 +8,18 @@ import java.io.InputStream;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.MultipartBody;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+
+/**
+ * Created by steven on 17-8-3.
+ */
 
 public class HttpToolKit {
     static void PostMe(String url, HashMap<String,String> form, HashMap<String,String> files, Callback callback)throws Exception{
@@ -35,7 +48,7 @@ public class HttpToolKit {
         OkHttpClient client=new OkHttpClient();
         client.newCall(request).enqueue(callback);
     }
-    static void GetMe(String url,Callback callback)throws Exception{
+    static void GetMe(String url, Callback callback)throws Exception{
         Request request=new Request.Builder().url(url).build();
         OkHttpClient client=new OkHttpClient();
         client.newCall(request).enqueue(callback);
@@ -50,13 +63,13 @@ public class HttpToolKit {
         OkHttpClient okHttpClient = new OkHttpClient();
         okHttpClient.newCall(request).enqueue(new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
+            public void onFailure(okhttp3.Call call, IOException e) {
                 // 下载失败
                 listener.onDownloadFailed(e);
             }
 
             @Override
-            public void onResponse(Call call, Response response) throws IOException {
+            public void onResponse(okhttp3.Call call, Response response) throws IOException {
                 InputStream is = null;
                 byte[] buf = new byte[2048];
                 int len = 0;
