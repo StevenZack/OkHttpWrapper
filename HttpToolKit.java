@@ -114,4 +114,13 @@ public class HttpToolKit {
             }
         });
     }
+    static WebSocket newWebSocket(String url, WebSocketListener wsl){
+        if (url.startsWith("http://"))
+            url=url.substring(7);
+        if (!url.startsWith("ws://"))
+            url="ws://"+url;
+        OkHttpClient client=new OkHttpClient();
+        WebSocket wsc = client.newWebSocket(new Request.Builder().url(url).build(), wsl);
+        return wsc;
+    }
 }
